@@ -46,6 +46,27 @@
           browserify dist/app.js -o dist/built.js
  */
 
+/*
+  1. 引入模块
+      import
+      import xxx from '模块路径';
+      import { xxx, yyy } from '模块路径';
+
+  2. 暴露模块
+    export
+    - 默认暴露
+      export default xxx; --> import xxx from '模块路径';
+    - 分别暴露
+      export const a = xxx;
+      export const b = function () {}; --> import { xxx, yyy } from '模块路径';
+    - 统一暴露
+      export {xxx, yyy}; --> import { xxx, yyy } from '模块路径';
+
+   3. ES6模块语法 nodejs平台不识别、浏览器也不识别
+      借助 babel 将ES6模块化语法编译成 commonjs 语法，这个语法只能 nodejs 平台识别
+      借助 browserify 将 commonjs 语法编译成浏览器能识别的语法
+ */
+
 // 引入模块
 // 引入默认暴露的模块
 import Person from './module1';
