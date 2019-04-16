@@ -35,7 +35,7 @@
         1. 初始化package.json
           npm init -y
         2. 下载并安装babel相关的包
-          npm install --save-dev @babel/core @babel/cli
+          npm install --save-dev @babel/core @babel/cli @babel/preset-env
         3. 创建 .babelrc 配置文件（这个文件就是babel运行时读取的配置文件）
           {
             "presets": ["@babel/env"]
