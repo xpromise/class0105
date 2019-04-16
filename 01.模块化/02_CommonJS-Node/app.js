@@ -1,4 +1,3 @@
-
 /*
   commonjs的模块化规范
     1. 引入模块
@@ -17,7 +16,7 @@
         module.exports 指向的值
         exports 是 module.exports 的引用
 
-        module.exports = {}
+        module.exports = {};
         exports = module.exports;
 
         exports.add = add;
@@ -27,9 +26,11 @@
 // 引入其他两个模块，使用
 const m1 = require('./module1');
 const m2 = require('./module2');
+const m3 = require('./module3');
 
 console.log(m1);
 console.log(m2);
 
 console.log(m1.sum(1, 2, 3, 4));
 console.log(m2.add(1, 2));
+console.log(m3(2, 3)); // {}：因为暴露出去的是module.exports指向的值，他的默认值为{}

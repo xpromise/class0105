@@ -21,4 +21,7 @@
   * 注意：默认clone下来是master分支
   * git fetch origin dev1:dev2  拉取远程仓库dev1分支的内容到本地的dev2分支上
 
+* git插件
+  * octotree
+
 
