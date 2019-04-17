@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>预加载</title>
+</head>
+<body>
+<button id="btn">按钮</button>
+<script type="text/javascript">
+  /*document.getElementById('btn').onclick = function () {
+    var image = new Image();
+    image.src = './imgs/1.jpg';
+    document.body.appendChild(image);
+  }*/
+
+  // 预加载：提取请求相应的资源
+  var image = new Image();
+  // 一旦给图片设置src属性，就会发送请求请求图片
+  image.src = './imgs/1.jpg';
+
+  document.getElementById('btn').onclick = function () {
+    var image = new Image();
+    // 加载重复的图片会直接找缓存
+    image.src = './imgs/1.jpg';
+    document.body.appendChild(image);
+  }
+
+</script>
+</body>
+</html>

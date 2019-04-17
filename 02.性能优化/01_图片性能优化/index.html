@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<img src="./img/1.jpg__.webp" alt="img">
+<script type="text/javascript">
+  const img = document.querySelector('img');
+
+  // 图片加载成功触发的事件
+  img.onload = function () {
+    console.log('图片加载成功~');
+  }
+  // 图片加载失败触发的事件
+  img.onerror = function () {
+    console.log('图片加载失败，当前浏览器不支持webp格式图片');
+    img.src = img.src.slice(0, -7);
+  }
+</script>
+</body>
+</html>
