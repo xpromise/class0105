@@ -35,12 +35,18 @@
 <img src="./imgs/loading.gif" data-src="./imgs/17.jpg" class="lazy-load" alt="img">
 <img src="./imgs/loading.gif" data-src="./imgs/18.jpg" class="lazy-load" alt="img">
 <script type="text/javascript">
+  const imgs0 = document.getElementsByClassName('lazy-load'); // dom0
+  const imgs2 = document.querySelectorAll('.lazy-load'); // dom2
+  console.log(imgs0);
+  console.log(imgs2);
+
 
   // 视口的高度
   const viewHeight = document.documentElement.clientHeight;
 
   function lazyLoad() {
-    const imgs = document.querySelectorAll('.lazy-load');
+
+    const imgs = document.querySelectorAll('.lazy-load'); // dom2
 
     imgs.forEach((img) => {
       // 当前图片距离视口的top值

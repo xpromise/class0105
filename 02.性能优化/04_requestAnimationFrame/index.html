@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    #box{
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 100px;
+      height: 100px;
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+<div id="box"></div>
+<script type="text/javascript">
+  const box = document.getElementById('box');
+
+  let num = 10;
+
+  function move() {
+    for (var i = 0; i < 100000000; i++) {
+      var obj = [{}, {}]
+    }
+    // 能让我们动画效果更加流畅
+    // 在渲染的时候优先调用函数（高优先级函数）
+    window.requestAnimationFrame(function () {
+      box.style.left = ++num + 'px';
+      move();
+    })
+  }
+
+  move();
+
+</script>
+</body>
+</html>
