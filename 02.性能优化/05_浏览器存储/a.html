@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<button id="btn">按钮</button>
+<script type="text/javascript">
+  /*
+   区别：
+      localStorage 持久化存储：会永久保存下来
+      sessionStorage 会话（浏览器打开访问页面，到浏览器关闭，这个过程称为一次会话）存储：一旦浏览器关闭，会自动清除所有数据
+   跨页面通信：
+    A页面：相办法将数据发送到B页面中
+    B页面：接受A页面发送的数据
+   */
+  // const person = {name: 'jack', age: 18};
+  // 将对象数据妆化为json数据
+  // const data = JSON.stringify(person);
+  // 存储的数据必须为字符串类型才能存储
+  // 如果不是会强制转换为字符串，不行报错
+  // sessionStorage.setItem('USER1', data);
+  // sessionStorage.setItem('USER2', data);
+
+  // 读取本地存储的数据
+  // const data = sessionStorage.getItem('USER1');
+  // console.log(data);
+  // const person = JSON.parse(data);
+  // console.log(person);
+
+  // 删除本地储存数据
+  // sessionStorage.removeItem('USER');
+
+  // 清除所有数据
+  // sessionStorage.clear();
+
+  let num = 0;
+  // 跨页面通信
+  document.getElementById('btn').onclick = function () {
+    localStorage.setItem('DATA', ++num);
+  }
+
+</script>
+</body>
+</html>
