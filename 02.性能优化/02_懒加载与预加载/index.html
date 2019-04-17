@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body,html{
+      height: 100%;
+    }
+    img{
+      width: 500px;
+      height: 500px;
+      margin: 0 auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<img src="./imgs/loading.gif" data-src="./imgs/1.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/2.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/3.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/4.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/5.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/6.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/7.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/8.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/9.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/10.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/11.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/12.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/13.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/14.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/15.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/16.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/17.jpg" class="lazy-load" alt="img">
+<img src="./imgs/loading.gif" data-src="./imgs/18.jpg" class="lazy-load" alt="img">
+<script type="text/javascript">
+
+  // 视口的高度
+  const viewHeight = document.documentElement.clientHeight;
+
+  function lazyLoad() {
+    const imgs = document.querySelectorAll('.lazy-load');
+
+    imgs.forEach((img) => {
+      // 当前图片距离视口的top值
+      const { top } = img.getBoundingClientRect();
+      // 判断图片是否出现在可视区域内
+      if (top < viewHeight) {
+        // 图片出现在可视区域内，加载图片真实地址
+        // 通常来讲 data-xxx 使用用户自定义属性（用来保存数据，浏览器不能识别）。
+        // 读取 data-xxx 属性的值，需要通过 dom.dataset.xxx 读取对应自定义属性的值
+        const src = img.dataset.src;
+        // 将图片src属性修改为图片真实地址
+        img.src = src;
+        // 删除dom元素上的属性
+        img.removeAttribute('class');
+        img.removeAttribute('data-src');
+      }
+    })
+  }
+
+  // 一上来需要手动触发lazyLoad: 目的为了第一次加载的时候出现在可视区域内的图片能够加载到
+  lazyLoad();
+
+  // 给document绑定滚轮事件
+  document.onscroll = lazyLoad;
+
+</script>
+</body>
+</html>
