@@ -11,6 +11,9 @@
       npm i xxx --save-dev / -D 下载并添加到开发依赖中
 
       npm i 下载当前目录下package.json中所有依赖包
+
+      npm i xxx -g 全局安装。不是给模块引入使用的，而是使用其指令
+        C:\Users\XiongJian\AppData\Roaming\npm 这个安装包的位置
     2. 删除
       npm remove xxx  删除node_modules中的包，和package.json、package-lock.json中依赖关系
       npm uninstall xxx
@@ -22,4 +25,16 @@
       2. 保证下载时是在当前package.json文件的目录下下载
 
     在cmd中退出操作：ctrl + c
+
+    淘宝的镜像服务器：
+      npm config set registry https://registry.npm.taobao.org
+      yarn config set registry https://registry.npm.taobao.org
+
+
+    1. 下载yarn
+      npm i yarn -g
+    2. 使用：
+      yarn add xxx  下载并添加到生产依赖
+      yarn add xxx --dev 开发依赖
+
  */
