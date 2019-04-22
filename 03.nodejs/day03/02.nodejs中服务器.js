@@ -14,7 +14,7 @@ const server = http.createServer((request, response) => {
   // 返回一个响应给客户端
   // 修改了服务器代码，一定要重启服务器
   response.end('<h1>这是nodejs返回的响应</h1>');
-})
+});
 
 // 通过server监听端口号
 // 端口号： 27017  系统想要运行某个东西，必须运行在某一个端口号上。如果有其他程序占用了端口号，就不能再使用了。
