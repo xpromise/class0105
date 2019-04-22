@@ -8,7 +8,7 @@ const app = express();
     3. 协议规定的具体内容：我们称之为报文：请求报文和响应报文
  */
 app.get('/login', (req, res) => {
-
+  res.send('这是服务器返回的响应~');
 });
 
 app.listen(4000, (err) => {
