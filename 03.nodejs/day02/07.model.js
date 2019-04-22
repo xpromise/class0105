@@ -76,6 +76,8 @@ const promise = new Promise((resolve, reject) => {
     - delete 删
       Model.deleteOne(查询条件)
       Model.deleteMany(查询条件)
+
+
    */
   const result = await Students.deleteOne({name: '汪伦'});
 

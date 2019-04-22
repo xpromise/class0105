@@ -50,6 +50,9 @@ const promise = new Promise((resolve, reject) => {
   })
   // 4. 创建Model模型对象
   const Students = mongoose.model('students', stuSchema);
+
+
+
   // 5. 创建Document文档对象
   const s1 = new Students({
     name: 'jack',
