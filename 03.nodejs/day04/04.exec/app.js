@@ -12,7 +12,6 @@ const app = express();
     解决：app.use(express.static('public'));
   需求二：完成注册功能
     1. 设置路由：响应用户提交的注册请求
-
  */
 // 向外暴露静态资源
 app.use(express.static('public'));
@@ -22,15 +21,15 @@ app.use(express.urlencoded({extended: true}));
 db
   .then(() => {
     // 确保数据库连接成功后，再进行数据库操作
-    app.post('/register', (req, res) => {
+    app.post('/register', async (req, res) => {
       // 处理注册的逻辑：将用户提交的表单数据保存在数据库中
       /*
         1. 获取用户提交的表单数据
         2. 使用正则表达式检验数据的合法性，如果不合法，直接返回错误提示给用户
-        3. 去数据库中检查用户名是否存在，如果存在，直接返回错误提示给用户
-        4. 保存用户数据，并且返回成功提示给用户
+        3. 检验密码和确认密码是否一致
+        4. 去数据库中检查用户名是否存在，如果存在，直接返回错误提示给用户
+        5. 保存用户数据，并且返回成功提示给用户
        */
-
       // 1. 获取用户提交的表单数据
       const { username, password, rePassword, email } = req.body;
       // 2. 使用正则表达式检验数据的合法性，如果不合法，直接返回错误提示给用户
@@ -62,14 +61,21 @@ db
         return;
       }
       // 4. 去数据库中检查用户名是否存在，如果存在，直接返回错误提示给用户
-      // 5. 保存用户数据，并且返回成功提示给用户
-
+      const result = await Users.findOne({username});
+      // 判断用户是否存在
+      if (result) {
+        // 说明用户已存在
+        res.send('用户已存在');
+      } else {
+        // 说明用户不存在
+        // 5. 保存用户数据，并且返回成功提示给用户
+        await Users.create({username, password, email});
+        res.send(username + '用户注册成功~');
+      }
 
     })
   })
-  .catch()
-
-
+  .catch();
 
 app.listen(3000, (err) => {
   if (!err) console.log('服务器启动成功了~');
