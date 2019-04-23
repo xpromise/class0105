@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 /*
-  路由：
+  路由(route)：
     1. 组成：
       请求方式 method : GET POST PUT DELETE
       请求路径： 定义访问服务器的网址
@@ -50,7 +50,16 @@ const app = express();
           nodejs xxxx
 
           需要使用 nodemon xxx
-
+   2. 是什么？
+     一种key-value映射关系：key值的是请求路径path，value指的是回调函数callback
+   3. 作用：
+     接收请求、返回响应
+     定义请求路径（定义访问服务器的网址）
+   4. 执行规则：
+    express会将所有路由按照先后顺序添加一个数组中。
+    当请求访问服务器时，服务器就会遍历这个数组，取出路由看是否匹配(请求方式和请求路径)
+    满足条件就会执行路由的回调函数。然后请求终止了~（后面的就不看了）
+    不满足条件，再看下一个路由看是否满足条件，如果都没满足呢？返回404 cannot get /xxx
  */
 
 // GET请求方式路由
@@ -75,17 +84,17 @@ app.get('/', (req, res) => {
 
 
   // res.redirect('https://www.baidu.com');
-})
+});
 // POST请求方式路由
 app.post('/shop/a', (req, res) => {
 
-})
+});
 
 app.get('/hotel/:id', (req, res) => {
   // 区别不同页面：得到id值
   console.log(req.params); // { id: '123456' }
   res.send('这是服务器返回的响应·');
-})
+});
 
 app.get(/\/shop\/(1\d{2}|200)/, (req, res) => {
   res.send('这是正则表达式路由，服务器返回的响应·');
@@ -94,4 +103,4 @@ app.get(/\/shop\/(1\d{2}|200)/, (req, res) => {
 app.listen(3000, (err) => {
   if (!err) console.log('服务器启动成功~');
   else console.log(err);
-})
+});
