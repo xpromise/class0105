@@ -28,7 +28,7 @@ const app = express();
         express.urlencoded({extended: true}) 用来解析请求体参数
       第三方中间件
         指得是其他社区开发者开发的开源中间件
-        cookieParser() 用来cookie数据
+        cookieParser() 用来解析cookie数据
       应用级中间件
         开发者自己开发的中间件：
           提取重复代码
@@ -38,7 +38,7 @@ const app = express();
         app.use((err, req, res, next) => {})
  */
 
-// 引入内置中间件解析请求体参数
+// 引入内置中间件解析请求体参数：获取到请求体数据，将其解析为{}，放在req.body上
 app.use(express.urlencoded({extended: true}));
 // 向外暴露静态资源（长期不会发生变化的资源），外部就能直接访问静态资源
 app.use(express.static('public'));
@@ -92,7 +92,6 @@ app.get('/register', (req, res) => {
   // 返回文件
   res.sendFile(__dirname + '/public/index.html');
 })
-
 
 app.use((err, req, res, next) => {
   console.log(err);

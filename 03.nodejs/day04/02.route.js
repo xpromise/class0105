@@ -27,15 +27,15 @@ const app = express();
           req.cookies 获取cookie
         response 响应信息：服务器给浏览器
           // 返回响应的方法
-          res.download(文件路径) 返回一个文件，浏览器会自动下载
-          res.sendFile(文件路径) 返回一个文件，浏览器会自动打开展示
-          res.end()  快速返回响应，响应内容不做任何处理
-          res.json()  将响应内容转化为json字符串，在返回响应
-          res.send()  根据不同的响应内容，做不同的处理
+          res.download(文件路径) 返回一个文件，浏览器会自动下载（需要下载）
+          res.sendFile(文件路径) 返回一个文件，浏览器会自动打开展示（需要打开文件显示）
+          res.end()  快速返回响应，响应内容不做任何处理（通常返回英文或数字的响应）
+          res.json()  将响应内容转化为json字符串，在返回响应（如果响应数据是object/array）
+          res.send()  根据不同的响应内容，做不同的处理(如果是标签字符串/中文/Buffer)
             如果是buffer数据，就会设置一个响应头 Content-Type: application/octet-stream
             如果是string数据，就会设置一个响应头 Content-Type: text/html;charset=utf8
             如果是object/array数据，就转化为json字符串，在返回响应
-          res.redirect()  请求资源重定向，重定向到新的网址
+          res.redirect()  请求资源重定向，重定向到新的网址（重新访问另外一个网址）
 
           // 设置响应信息
           res.get()  获取响应头信息
