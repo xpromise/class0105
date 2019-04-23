@@ -82,7 +82,6 @@ app.get('/', (req, res) => {
   res.status(500).end('这是服务器响应~');
   // res.json({name: 'jack', age: 18});
 
-
   // res.redirect('https://www.baidu.com');
 });
 // POST请求方式路由
