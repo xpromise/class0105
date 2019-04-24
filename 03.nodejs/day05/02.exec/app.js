@@ -5,7 +5,7 @@ const sha1 = require('sha1');
 // 用户自定义的模块放下面
 const db = require('./db');
 const Users = require('./models/users');
-
+// 唯一的
 const app = express();
 
 /*
@@ -21,6 +21,15 @@ app.use(express.urlencoded({extended: true}));
 
 db
   .then(() => {
+    // 需要通过 /login 地址 访问 login.html 页面
+    // 目的： 将网址去掉 .html
+    app.get('/login', (req, res) => {
+      res.sendFile(__dirname + '/public/login.html');
+    })
+    app.get('/register', (req, res) => {
+      res.sendFile(__dirname + '/public/register.html');
+    })
+
     // 应用级中间件，提取重复代码
     app.use((req, res, next) => {
 
@@ -107,7 +116,7 @@ db
         res.send(username + '用户注册成功~');
       }
 
-    })
+    });
 
     // 登录功能
     app.post('/login', async (req, res) => {
@@ -144,7 +153,7 @@ db
         // 没有找到，用户名或密码错误
         res.send('用户名或密码错误');
       }
-    })
+    });
 
   })
   .catch();
