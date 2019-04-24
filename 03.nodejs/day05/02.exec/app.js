@@ -25,10 +25,10 @@ db
     // 目的： 将网址去掉 .html
     app.get('/login', (req, res) => {
       res.sendFile(__dirname + '/public/login.html');
-    })
+    });
     app.get('/register', (req, res) => {
       res.sendFile(__dirname + '/public/register.html');
-    })
+    });
 
     // 应用级中间件，提取重复代码
     app.use((req, res, next) => {

@@ -1,4 +1,6 @@
 const express = require('express');
+const sha1 = require('sha1');
+const Users = require('../models/users');
 
 const router = new express.Router();
 
