@@ -7,7 +7,6 @@
     2. 提取promise对象成功状态的返回值，赋值给左边
  */
 
-
 (async () => {
 
   await setTimeout(() => {

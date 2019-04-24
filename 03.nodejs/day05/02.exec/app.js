@@ -1,6 +1,7 @@
 // 引入模块的代码放在最上面
 // node核心模块或者npm下载的模块放上面
 const express = require('express');
+const sha1 = require('sha1');
 // 用户自定义的模块放下面
 const db = require('./db');
 const Users = require('./models/users');
@@ -42,7 +43,8 @@ db
         return;
       }
 
-      if (email && !emailReg.test(email)) {
+      // req.path === '/register' 判断当前请求是注册在请求
+      if (req.path === '/register' && !emailReg.test(email)) {
         res.send('邮箱格式不正确');
         return;
       }
@@ -101,7 +103,7 @@ db
       } else {
         // 说明用户不存在
         // 5. 保存用户数据，并且返回成功提示给用户
-        await Users.create({username, password, email});
+        await Users.create({username, password: sha1(password), email});
         res.send(username + '用户注册成功~');
       }
 
@@ -133,7 +135,7 @@ db
         return;
       }*/
       // 3. 去数据库中查找是否有指定用户
-      const result = await Users.findOne({username, password});
+      const result = await Users.findOne({username, password: sha1(password)});
 
       if (result) {
         // 4. 找到了并用户名和密码都是正确的，才返回登录成功
