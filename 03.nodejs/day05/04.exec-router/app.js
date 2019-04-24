@@ -23,8 +23,8 @@ app.use(express.urlencoded({extended: true}));
 db
   .then(() => {
     // 使用路由器中间件
-    app.use(userRouter);
     app.use(uiRouter);
+    app.use(userRouter);
   })
   .catch();
 

@@ -9,7 +9,6 @@ const router = new express.Router();
 router.get('/login', (req, res) => {
   // 将多个路径最终拼接成一个绝对路径（其中../代码回退一层目录）
   const fileName = path.resolve(__dirname, '../', 'public/login.html');
-  console.log(fileName);
   res.sendFile(fileName);
 })
 router.get('/register', (req, res) => {
