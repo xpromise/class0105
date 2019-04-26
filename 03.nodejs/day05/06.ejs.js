@@ -27,7 +27,7 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
   // 错误提示
   const err = '<h1>用户名密码错误</h1>';
-  const data = [{name: 'jack', age: 18}, {name: 'jack', age: 18},{name: 'jack', age: 18},{name: 'jack', age: 18},{name: 'jack', age: 18},{name: 'jack', age: 18},]
+  const data = [{name: 'jack', age: 18}, {name: 'jack', age: 18}, {name: 'jack', age: 18}, {name: 'jack', age: 18},{name: 'jack', age: 18},{name: 'jack', age: 18},]
   // 使用配置好的模板引擎解析传入的模板资源
   // 将指定数据渲染到ejs页面上, 并返回渲染完成数据的页面给前端   res.render('模板页面', 指定数据)
   // 指定数据：必须是对象结构
