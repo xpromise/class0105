@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ajax</title>
+</head>
+<body>
+<button id="btn">按钮</button>
+<script type="text/javascript">
+  document.getElementById('btn').onclick = function () {
+    // 点击按钮 发送ajax请求
+
+    // 1. 创建xhr实例对象： 用来发送ajax请求的对象
+    const xhr = new XMLHttpRequest();
+
+    // 2. 绑定事件监听： 用来监听响应结果（服务器返回的响应）
+    // readystate xhr内部的状态码。 内部状态码发生变化时触发的事件
+    xhr.onreadystatechange = function () {
+      // 判断请求成功
+      // 获取响应状态码 200   xhr.status
+      if (xhr.status === 200) {
+        // 请求成功~  打印输出响应的内容 xhr.responseText
+        console.log(xhr.responseText);
+      }
+    };
+
+    // 3. 设置请求信息（请求地址、请求方式、请求头、请求参数等...）
+    // xhr.open('GET', 'http://localhost:3000/?username=sunwukong&age=18');  // xhr.open(请求方式，请求地址?查询字符串)
+    // xhr.setRequestHeader('xxx', 'xxxxxx'); // 设置请求头
+    xhr.open('POST', 'http://localhost:3000/');
+    xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+
+    // 4. 发送请求
+    xhr.send('username=sunwukong&age=18');  // xhr.send(body)  body就是post请求的请求体参数  参数按照urlencoded编码（key=value&key=value）
+  }
+</script>
+</body>
+</html>
