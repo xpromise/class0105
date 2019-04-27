@@ -4,6 +4,8 @@ const Cities = require('./models/cities');
 
 const app = express();
 
+app.use(express.static('public'));
+
 db
   .then(() => {
     // 获取省份数据的路由
@@ -21,7 +23,7 @@ db
         // catch就用来处理错误
         console.log(e);
         // 返回失败的错误给前端
-        res.json({code: 1, err: e});
+        res.json({code: 1, err: '网络错误，请刷新试试'});
       }
     });
     // 获取城市数据的路由
@@ -41,9 +43,18 @@ db
 
     });
     // 获取区县数据的路由
-    app.get('/county', (req, res) => {
+    app.get('/county', async (req, res) => {
+      // 查询条件 {province: xx, city: xx, level: 3}
+      try {
+        const { province, city } = req.query;
+        const result = await Cities.find({province, city, level: 3});
+        res.json({code: 0, data: result});
+      } catch {
+        res.json({code: 1, err: '网络错误~'});
+      }
 
     });
+
   })
   .catch(() => {
     console.log('数据库连接失败~');

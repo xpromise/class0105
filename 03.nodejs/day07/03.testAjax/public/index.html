@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>三级联动</title>
+</head>
+<body>
+
+<select id="province">
+  <option>请选择省份</option>
+</select> 省
+
+<select id="city">
+  <option>请选择市</option>
+</select> 市
+
+<select id="county">
+  <option>请选择区(县)</option>
+</select> 区(县)
+
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+  // $.ready()  --> DOMContentLoaded
+  $(function () {
+    // 获取jQuery对象
+    const $province = $('#province');
+    const $city = $('#city');
+    const $county = $('#county');
+
+    // 一上来需要请求所有省份数据
+    $.get('/province', function (result) {
+      // jquery会自动将json字符串转化为js对象
+      // 判断数据是否请求成功
+      if (result.code === 0) {
+        // 请求成功，显示数据
+        /*let html = '';
+        result.data.forEach(function (item) {
+          html += `<option>${item.name}</option>`;
+        });*/
+        /*const html = result.data.reduce(function (prev, curr) {
+          return prev + `<option>${curr.name}</option>`;
+        }, '');*/
+        const html = result.data.reduce((prev, curr) => prev + `<option value="${curr.province}">${curr.name}</option>`, '');
+        // 追加
+        $province.append(html);
+      } else {
+        // 请求失败, 提示错误
+        alert(result.err);
+      }
+
+    })
+
+    // 当用户点击某个省份，需要请求对应城市数据
+    // change事件：当元素的值发生变化就会触发的事件
+    $province.change(function () {
+      // 获取变化后的值
+      // console.log(this.value);
+      const province = this.value;
+
+      // 发送请求，请求城市数据
+      $.get('/city', {province}, function (result) {
+        if (result.code === 0) {
+          // 请求成功，显示数据
+          const html = result.data.reduce((prev, curr) => prev + `<option value="${curr.city}">${curr.name}</option>`, '<option>请选择市</option>');
+          // 设置标签元素的内容（覆盖、重写）
+          $city.html(html);
+        } else {
+          alert(result.err);
+        }
+      });
+
+    })
+
+
+
+  })
+
+</script>
+</body>
+</html>
