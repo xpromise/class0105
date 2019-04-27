@@ -42,12 +42,12 @@ db
       }
 
     });
-    // 获取区县数据的路由
+    // 获取区县数据的路由<option>请选择区(县)</option>
     app.get('/county', async (req, res) => {
       // 查询条件 {province: xx, city: xx, level: 3}
       try {
         const { province, city } = req.query;
-        const result = await Cities.find({province, city, level: 3});
+        const result = await Cities.find({province, city, level: 3}, {county: 1, name: 1, _id: 0});
         res.json({code: 0, data: result});
       } catch {
         res.json({code: 1, err: '网络错误~'});
@@ -59,7 +59,6 @@ db
   .catch(() => {
     console.log('数据库连接失败~');
   })
-
 
 
 app.listen(3000, (err) => {
