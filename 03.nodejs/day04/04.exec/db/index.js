@@ -2,7 +2,6 @@
   此模块用来连接数据库的
  */
 const mongoose = require('mongoose');
-
 mongoose.connect('mongodb://localhost:27017/exec', { useNewUrlParser: true, useCreateIndex: true });
 
 module.exports = new Promise((resolve, reject) => {

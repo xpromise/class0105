@@ -15,23 +15,44 @@
 
     // 2. 绑定事件监听： 用来监听响应结果（服务器返回的响应）
     // readystate xhr内部的状态码。 内部状态码发生变化时触发的事件
+    /*
+      readystate
+        0：代表open方法还未调用
+        1：代表send方法还未调用（还没有发送请求），还来得及设置请求信息
+        2：代表send方法已经发送了（请求已经发送了），并且接受到了部分的响应信息（响应首行和响应头  --> 响应状态码）
+        3：代表接受到了部分响应数据（如果数据较小，就全部接受了，如果数据比较大，就只接受部分数据）  --> 响应体数据
+        4：代表全部接受完毕响应数据
+     */
     xhr.onreadystatechange = function () {
       // 判断请求成功
       // 获取响应状态码 200   xhr.status
-      if (xhr.status === 200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         // 请求成功~  打印输出响应的内容 xhr.responseText
         console.log(xhr.responseText);
       }
     };
 
     // 3. 设置请求信息（请求地址、请求方式、请求头、请求参数等...）
-    // xhr.open('GET', 'http://localhost:3000/?username=sunwukong&age=18');  // xhr.open(请求方式，请求地址?查询字符串)
+    xhr.open('GET', 'http://localhost:3000/?username=sunwukong&age=18&date=' + Date.now());  // xhr.open(请求方式，请求地址?查询字符串)
     // xhr.setRequestHeader('xxx', 'xxxxxx'); // 设置请求头
-    xhr.open('POST', 'http://localhost:3000/');
-    xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+    // xhr.open('POST', 'http://localhost:3000/');
+    // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+
+    /*
+    问题：
+      默认浏览器都能够缓存get请求（请求地址和请求参数不变）
+      chrome/firefox
+        如果后台服务器响应结果不变，那么会读取之前的缓存
+        如果后台服务器响应结果变了，那么会读取变化后结果
+      ie
+        不管后台服务器响应结果发生了什么变化，永远读取的是第一次缓存结果
+        带来的问题：如果数据是实时更新的，ie就读取不到最新内容
+        解决: 让ie不在读取缓存数据，要求请求参数实时变化（加上随机数或者时间戳）
+     */
 
     // 4. 发送请求
-    xhr.send('username=sunwukong&age=18');  // xhr.send(body)  body就是post请求的请求体参数  参数按照urlencoded编码（key=value&key=value）
+    xhr.send();
+    // xhr.send('username=sunwukong&age=18');  // xhr.send(body)  body就是post请求的请求体参数  参数按照urlencoded编码（key=value&key=value）
   }
 </script>
 </body>

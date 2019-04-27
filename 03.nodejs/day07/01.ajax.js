@@ -8,7 +8,7 @@ app.use(express.urlencoded({extended: true}));
 app.get('/', (req, res) => {
   console.log(req.query);
 
-  res.send('这是服务器返回的响应~');
+  res.send('这是服务器返回的响应~44444444444');
 })
 
 app.post('/', (req, res) => {
