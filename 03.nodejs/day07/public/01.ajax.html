@@ -8,6 +8,18 @@
 <button id="btn">按钮</button>
 <script type="text/javascript">
   document.getElementById('btn').onclick = function () {
+    /*
+      常见post请求:
+        form 表单 method 为 post
+        ajax 请求方式 post
+      常见get请求：
+        form 表单 method 为 get
+        ajax 请求方式 get
+        浏览器输入url网址
+        script、img、link等
+    */
+
+
     // 点击按钮 发送ajax请求
 
     // 1. 创建xhr实例对象： 用来发送ajax请求的对象
@@ -26,6 +38,7 @@
     xhr.onreadystatechange = function () {
       // 判断请求成功
       // 获取响应状态码 200   xhr.status
+      console.log(xhr.status);
       if (xhr.readyState === 4 && xhr.status === 200) {
         // 请求成功~  打印输出响应的内容 xhr.responseText
         console.log(xhr.responseText);
@@ -33,10 +46,10 @@
     };
 
     // 3. 设置请求信息（请求地址、请求方式、请求头、请求参数等...）
-    xhr.open('GET', 'http://localhost:3000/?username=sunwukong&age=18&date=' + Date.now());  // xhr.open(请求方式，请求地址?查询字符串)
+    // xhr.open('GET', 'http://localhost:3000/?username=sunwukong&age=18');  // xhr.open(请求方式，请求地址?查询字符串)
     // xhr.setRequestHeader('xxx', 'xxxxxx'); // 设置请求头
-    // xhr.open('POST', 'http://localhost:3000/');
-    // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+    xhr.open('POST', 'http://localhost:3000/');
+    xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
 
     /*
     问题：
@@ -51,8 +64,8 @@
      */
 
     // 4. 发送请求
-    xhr.send();
-    // xhr.send('username=sunwukong&age=18');  // xhr.send(body)  body就是post请求的请求体参数  参数按照urlencoded编码（key=value&key=value）
+    // xhr.send();
+    xhr.send('username=sunwukong&age=19');  // xhr.send(body)  body就是post请求的请求体参数  参数按照urlencoded编码（key=value&key=value）
   }
 </script>
 </body>
