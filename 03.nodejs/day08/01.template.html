@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>art-template</title>
+</head>
+<body>
+
+<div id="box"></div>
+
+<script type="text/html" id="tpl">
+  <!--  写模板代码 -->
+  <ul>
+    {{each data}}
+      <li> {{$value}} - {{$index}} </li>
+    {{/each}}
+  </ul>
+
+  {{if flag}}
+    <p>判断条件成立！</p>
+  {{/if}}
+
+</script>
+
+<script type="text/javascript" src="./js/template-web.js"></script>
+<script type="text/javascript">
+  /*
+    1. 引入 template-web.js 文件
+    2. 创建模板代码
+      - 创建script标签
+      - 将type修改为text/html
+      - 添加一个id属性 -- 为了找到当前标签
+    3. 编译模板代码：将模板代码编译成标签字符串
+      template(id值, {渲染的数据})
+    4. 将编译后标签字符串插入页面指定容器中，方能生效
+
+    应用：需要写很多重复性结构时，使用它
+   */
+
+  const html = template('tpl', {data: ['jack', 'bob', 'lucy', 'tom', 'jerry'], flag: false});
+  console.log(html);
+  document.getElementById('box').innerHTML = html;
+
+</script>
+</body>
+</html>
