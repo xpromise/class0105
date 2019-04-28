@@ -9,7 +9,7 @@
 
 <div id="box"></div>
 
-<!--<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>-->
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
   /*
     同源策略：这是浏览器的安全策略，保证浏览器能更加安全稳定的运行
@@ -25,7 +25,7 @@
 
     程序员就利用了script发送了跨域请求 --- jsonp json with padding
    */
-  // 1. 创建script标签
+  /*// 1. 创建script标签
   const script = document.createElement('script');
   // 2. 设置script标签的scr属性，为了让其发送请求
   script.src = 'http://localhost:3000/jsonp?callback=getData';
@@ -36,9 +36,21 @@
   }
   // 4. 添加到页面中生效
   document.body.appendChild(script);
+*/
 
+  $.getJSON('http://localhost:3000/jsonp?callback=?&xxx=xxx', function (data) {
+    console.log(data);
+  })
 
-
+  /*
+    cors和jsonp区别：
+      1. 兼容性：
+        jsonp 极好
+        cors 稍差
+      2. 处理请求的能力
+        jsonp 只能处理 get 请求（因为script只能发送get）
+        cors 能处理所有请求
+   */
 </script>
 </body>
 </html>
