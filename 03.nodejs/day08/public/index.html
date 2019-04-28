@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!--<iframe src="https://www.baidu.com" frameborder="0"></iframe>-->
+
+<div id="box"></div>
+
+<!--<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>-->
+<script type="text/javascript">
+  /*
+    同源策略：这是浏览器的安全策略，保证浏览器能更加安全稳定的运行
+    规定：域名/ip地址  协议名  端口号 必须三者完全一致
+    同源策略：是浏览器的ajax引擎负责维护的
+
+    一旦有一个不一样，就违背同源策略，产生跨域。
+
+    往往服务器会有多个，资源在不同的服务器上，所以一旦请求就会导致跨域。  开发者就需要想办法解决跨域问题。
+
+    程序员发现 像 script、link、img等标签发送请求时，没有跨域问题
+    就想利用这些标签来发送请求
+
+    程序员就利用了script发送了跨域请求 --- jsonp json with padding
+   */
+  // 1. 创建script标签
+  const script = document.createElement('script');
+  // 2. 设置script标签的scr属性，为了让其发送请求
+  script.src = 'http://localhost:3000/jsonp?callback=getData';
+  // 3. 定义一个回调函数
+  function getData(data) {
+    console.log(data);
+    document.getElementById("box").innerHTML = `<h1>${data}</h1>`;
+  }
+  // 4. 添加到页面中生效
+  document.body.appendChild(script);
+
+
+
+</script>
+</body>
+</html>
