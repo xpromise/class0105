@@ -34,6 +34,11 @@ const rp = require('request-promise-native');
 
 const { writeFile, readFile } = require('fs');
 
+const { writeFileAsync } = require('../utils/tools');
+
+// 定义变量临时保存access_token数据
+let accessToken = null;
+
 /**
  * 获取access_token
  */
@@ -60,16 +65,7 @@ async function getAccessToken() {
     result.expires_in = Date.now() + 7200000 - 300000;
     // 保存起来
     // 给writeFile包一层promise对象，目的为了等writeFile执行完毕，在执行其他代码
-    await new Promise((resolve, reject) => {
-      // 不能直接保存对象数据，需要转换为json字符串
-      writeFile('./accessToken.txt', JSON.stringify(result), (err) => {
-        if (!err) {
-          resolve();
-        } else {
-          reject();
-        }
-      })
-    })
+    await writeFileAsync('accessToken.txt', result);
     // 将result作为当前函数返回值
     // async函数默认返回值是promise对象，promise对象内部保存的数据看async函数内部return的返回值
     return result;
@@ -80,9 +76,23 @@ async function getAccessToken() {
 }
 
 /**
+ * 判断accessToken是否过期的方法
+ * @param accessToken
+ * @returns {boolean}
+ */
+function isValidAccessToken(accessToken) {
+  return accessToken.expires_in > Date.now();
+}
+
+/**
  * 执行函数，得到有效的access_token
  */
-function fetchAccessToken() {
+module.exports = function fetchAccessToken() {
+  // 优化下面的过程。如果accessToken存在并且是在有效期，那么直接读取内存的数据就OK
+  if (accessToken && isValidAccessToken(accessToken)) {
+    return Promise.resolve(accessToken);
+  }
+
   /*
     读取保存的access_token  fs.readFile
           有：（第二次）
@@ -92,7 +102,6 @@ function fetchAccessToken() {
           没有：（第一次）
             发送请求，得到access_token, 保存起来
    */
-
   // 读取保存的access_token
   return new Promise((resolve, reject) => {
     readFile('./accessToken.txt', (err, data) => {
@@ -103,13 +112,13 @@ function fetchAccessToken() {
       }
     })
   })
-    /*
-      .then() .catch() 方法默认返回promise对象，所以才能无限写
-       then/catch函数返回的promise对象内部的值就看传入的第一个参数（函数）的返回值
-     */
+  /*
+    .then() .catch() 方法默认返回promise对象，所以才能无限写
+     then/catch函数返回的promise对象内部的值就看传入的第一个参数（函数）的返回值
+   */
     .then(async (res) => {
       // 判断access_token是否过期
-      if (res.expires_in > Date.now()) {
+      if (isValidAccessToken(res)) {
         // 没有过期
         // res相当于then函数返回值promise内部数据
         return res;
@@ -122,10 +131,17 @@ function fetchAccessToken() {
       // 发送请求，得到access_token, 保存起来
       return await getAccessToken();
     })
+    .then((res) => {
+      // 不管触发上面的then还是catch函数，最终都会执行当前then函数
+      // 将变量赋值为access_token
+      accessToken = res;
+      return res;
+    })
 }
 
-!(async () => {
-  const result = await fetchAccessToken();
-  console.log(result);
-})()
+// 测试代码
+/*!(async () => {
+  let result = await fetchAccessToken();
+  result = await fetchAccessToken();
+})()*/
 

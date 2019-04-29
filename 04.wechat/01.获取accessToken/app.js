@@ -9,9 +9,8 @@ const app = express();
     指令：ngrok http 3000  生成一个网址，需要将网址填写到安全域名上
   2. JS-SDK使用权限签名算法
     签名算法 需要使用 jsapi_ticket。 jsapi_ticket 需要通过 access_token 才能获取
-
-  3. 获取 access_token
-
+  3. 获取 access_token： 开始开发 - 获取access——token
+  4. 获取 jsapi_ticket：微信网页开发 - js-sdk说明文档 - 附录1
  */
 
 app.get('/search', (req, res) => {
