@@ -13,7 +13,7 @@ const app = express();
     签名算法 需要使用 jsapi_ticket。 jsapi_ticket 需要通过 access_token 才能获取
   3. 获取 access_token： 开始开发 - 获取access——token
   4. 获取 jsapi_ticket：微信网页开发 - js-sdk说明文档 - 附录1
-  5. 得到签名
+  5. 得到签名 http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign
  */
 
 app.set('views', 'views');

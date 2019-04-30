@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
   <title>search</title>
 </head>
 <body>
   <h1>search</h1>
+  <button id="start">开始录音</button>
+  <button id="end">结束录音</button>
+  <ul id="list"></ul>
   <!--
     1. 引入微信js-sdk js文件
     2. 通过config接口注入权限验证配置：配置通过才能使用
   -->
   <script type="text/javascript" src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
     wx.config({
       debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -18,7 +23,97 @@
       timestamp: '<%= timestamp %>', // 必填，生成签名的时间戳
       nonceStr: '<%= noncestr %>', // 必填，生成签名的随机串
       signature: '<%= signature %>',// 必填，签名
-      jsApiList: [] // 必填，需要使用的JS接口列表
+      jsApiList: [
+        'updateAppMessageShareData',
+        'updateTimelineShareData',
+        'chooseImage',
+        'startRecord',
+        'stopRecord',
+        'translateVoice'
+      ] // 必填，需要使用的JS接口列表
+    });
+
+    // 微信权限成功的回调函数
+    wx.ready(function(){
+      // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+      // 将微信sdk代码写在里面
+
+      // 检测指定接口是否可以使用
+      /*wx.checkJsApi({
+        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'chooseImage', 'startRecord', 'stopRecord', 'translateVoice'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+        success: function(res) {
+          // 以键值对的形式返回，可用的api值true，不可用为false
+          // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+          alert(res);
+        }
+      });*/
+
+      // 使用
+      document.getElementById('start').onclick = function () {
+        console.log(111);
+        // 开始录音
+        // wx.startRecord();
+        wx.chooseImage({
+          count: 1, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+          }
+        });
+      }
+
+      document.getElementById('end').onclick = function () {
+        // 停止录音
+        wx.stopRecord({
+          success: function (res) {
+            var localId = res.localId;
+            // console.log(localId); // wxLocalResource://voiceLocalId1234567890123
+
+            // 结束录音后，对录音进行语音识别
+            wx.translateVoice({
+              localId: localId, // 需要识别的音频的本地Id，由录音相关接口获得
+              isShowProgressTips: 1, // 默认为1，显示进度提示
+              success: function (res) {
+                // alert(res.translateResult); // 语音识别的结果  只是一个模拟调试的结果
+                // const result = res.translateResult;
+                const result = '小猪佩奇';
+                // 根据结果去发送请求  请求电影数据
+                // 产生跨域，需要使用jsonp解决跨域
+                $.getJSON(`https://api.douban.com/v2/movie/search?q=${result}&count=9&callback=?`, function (data) {
+                  // data 需要将其展示在页面上
+                  const html = data.subjects.reduce((prev, curr) => {
+                    return prev + `<li><h3>${curr.title}</h3><img src="${curr.images.small}" alt=""><p>评分：${curr.rating.average}</p></li>`;
+                  }, '')
+                  $('#list').html(html);
+
+                  // 微信分享：微信默认就能分享，但是分享的内容是当前的网址和图标（没有其他信息）
+                  // 自定义分享：修改微信分享的内容。让网址和图片和文字是我指定内容
+                  wx.updateAppMessageShareData({
+                    title: data.subjects[0].title, // 分享标题
+                    desc: data.subjects[0].title, // 分享描述
+                    link: data.subjects[0].alt, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: data.subjects[0].images.small, // 分享图标
+                    success: function () {
+                      // 设置成功
+                    }
+                  })
+
+                })
+
+              }
+            });
+
+          }
+        });
+      }
+
+    });
+
+    // 微信权限失败的回调函数
+    wx.error(function(res){
+      // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+      alert('暂不支持使用微信sdk功能');
     });
   </script>
 </body>
