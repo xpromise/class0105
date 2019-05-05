@@ -95,6 +95,12 @@ gulp.task('less', function () {
     .pipe(gulp.dest('./build/css'))
     .pipe(livereload());
 });
+
+gulp.task('html', function () {
+  return gulp.src('src/index.html')
+    .pipe(gulp.dest('build/'))
+    .pipe(livereload());
+});
 // 自动化任务
 gulp.task('watch', function () {
   // 热更新文件
@@ -112,15 +118,28 @@ gulp.task('watch', function () {
   // 一旦js源码文件发生变化，就自动编译运行之前设定的任务
   gulp.watch('src/js/*.js', gulp.series(['eslint', 'babel', 'browserify']));
   gulp.watch('src/less/*.less', gulp.series(['less']));
+  gulp.watch('src/index.html', gulp.series(['html']));
 });
 
 // 配置任务：为了统一执行之前配置好的任务
 // 任务名是 default ， 输入指令可以省略
-gulp.task('default', gulp.series(['eslint', 'babel', 'browserify'])); // 同步执行、顺序执行
-// gulp.task('default', gulp.parallel(['eslint', 'babel', 'browserify'])); // 异步执行，同一时间干多件事，谁先干完谁先结束
+gulp.task('js-dev', gulp.series(['eslint', 'babel', 'browserify'])); // 同步执行、顺序执行
+gulp.task('all-dev', gulp.parallel(['js-dev', 'less', 'html'])); // 异步执行，同一时间干多件事，谁先干完谁先结束
+
+// 开发环境指令
+gulp.task('dev', gulp.series(['all-dev', 'watch']));
 
 /*
   开发环境：
-    能将用户写的源代码编译运行的环境：编译代码（js、less）、语法检查、自动化任务
+    能将用户写的源代码编译运行的环境：编译代码（js、less）、语法检查、自动化任务(自动编译，自动打开浏览器，自动刷新/热更新)
+  生产环境：
+    能生成一个直接上线能使用的项目代码：编译代码（js、less）、语法检查、压缩代码（js、css、html）
+
+  启动项目的指令：
+    npm start / npm run dev  --> 需要在package.json中scripts设置指令
+      "scripts": {
+        "start": "gulp dev",
+        "dev": "gulp dev"
+      }
 
  */
