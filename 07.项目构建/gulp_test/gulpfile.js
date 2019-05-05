@@ -20,7 +20,7 @@
         string 单个路径
         array 多个路径
       gulp.dest() 输出（将流中的文件写入到指定位置）
-      gulp.watch() 监视
+      gulp.watch(源码目录, 一旦变化要执行的任务) 监视
 
    babel
      1. 是什么?  一个js的编译器
@@ -53,15 +53,20 @@ const babel = require('gulp-babel');
 const browserify = require('gulp-browserify');
 const rename = require("gulp-rename");
 const eslint = require('gulp-eslint');
+const less = require('gulp-less');
+const concat = require('gulp-concat');
+const livereload = require('gulp-livereload');
+const connect = require('gulp-connect');
+const open = require('open');
 
 // 配置插件任务
-
 // 语法检查 eslint
 gulp.task('eslint', () => {
   return gulp.src(['src/js/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())  // 检查语法错误提示规则
-    .pipe(eslint.failAfterError()); // 一旦出错就停止运行任务
+    .pipe(eslint.failAfterError()) // 一旦出错就停止运行任务
+    .pipe(livereload());
 });
 // 语法转换（es6模块化语法转换为commonjs，es6其他语法转换为es5以下语法）
 gulp.task('babel', function () {
@@ -70,6 +75,7 @@ gulp.task('babel', function () {
       presets: ['@babel/env']
     }))
     .pipe(gulp.dest('build/js'))  // 将流中文件输出到指定目录去
+    .pipe(livereload());
 });
 // 将commonjs语法转换成浏览器能识别的语法
 gulp.task('browserify', function () {
@@ -78,10 +84,43 @@ gulp.task('browserify', function () {
     .pipe(browserify())  // 将commonjs语法转换成浏览器能识别的语法
     .pipe(rename('built.js')) // 将文件重命名
     .pipe(gulp.dest('build/js'))
+    .pipe(livereload());
 });
 
+gulp.task('less', function () {
+  // 减少多次的文件读写操作
+  return gulp.src('./src/less/*.less')
+    .pipe(less()) // 将less文件编译成css文件
+    .pipe(concat('built.css'))  // 合并多个css文件，并命名为built.css
+    .pipe(gulp.dest('./build/css'))
+    .pipe(livereload());
+});
+// 自动化任务
+gulp.task('watch', function () {
+  // 热更新文件
+  livereload.listen();
+  // 开启服务器，自己开启的服务器才能控制热更新
+  connect.server({
+    name: 'Dev App',
+    root: ['./build'],  // 服务器要运行的代码位置
+    port: 3000, // 端口号
+    livereload: true // 开启热更新，刷新页面
+  });
+  // 自动打开浏览器
+  open('http://localhost:3000');
+  // 自动化任务: 自动编译
+  // 一旦js源码文件发生变化，就自动编译运行之前设定的任务
+  gulp.watch('src/js/*.js', gulp.series(['eslint', 'babel', 'browserify']));
+  gulp.watch('src/less/*.less', gulp.series(['less']));
+});
 
 // 配置任务：为了统一执行之前配置好的任务
 // 任务名是 default ， 输入指令可以省略
 gulp.task('default', gulp.series(['eslint', 'babel', 'browserify'])); // 同步执行、顺序执行
 // gulp.task('default', gulp.parallel(['eslint', 'babel', 'browserify'])); // 异步执行，同一时间干多件事，谁先干完谁先结束
+
+/*
+  开发环境：
+    能将用户写的源代码编译运行的环境：编译代码（js、less）、语法检查、自动化任务
+
+ */
