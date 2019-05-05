@@ -25,10 +25,10 @@ gulp.task('babel', function () {
     .pipe(gulp.dest('build/js'))  // 将流中文件输出到指定目录去
 });
 
-gulp.task('browserify', function() {
+gulp.task('browserify', function () {
   // 所有gulp任务函数中都必须指定return，否则报错
-  return gulp.src('build/js/app.js')
+  return gulp.src('build/js/app.js') // browserify会根据入口文件自动找相关所有依赖文件，而babel不会，babel只对要处理的文件处理
     .pipe(browserify())  // 将commonjs语法转换成浏览器能识别的语法
     .pipe(rename('built.js')) // 将文件重命名
-    .pipe(gulp.dest('./build/js'))
+    .pipe(gulp.dest('build/js'))
 });
