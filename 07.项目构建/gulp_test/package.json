@@ -15,6 +15,17 @@
     "gulp": "^4.0.1",
     "gulp-babel": "^8.0.0",
     "gulp-browserify": "^0.5.1",
+    "gulp-eslint": "^5.0.0",
     "gulp-rename": "^1.4.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "sourceType": "module"
+    },
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": true
+    }
   }
 }
