@@ -58,6 +58,9 @@ const concat = require('gulp-concat');
 const livereload = require('gulp-livereload');
 const connect = require('gulp-connect');
 const open = require('open');
+const uglify = require('gulp-uglify');
+const cssmin = require('gulp-cssmin');
+const htmlmin = require('gulp-htmlmin');
 
 // 配置插件任务
 // 语法检查 eslint
@@ -85,6 +88,33 @@ gulp.task('browserify', function () {
     .pipe(rename('built.js')) // 将文件重命名
     .pipe(gulp.dest('build/js'))
     .pipe(livereload());
+});
+/*
+  gulp.task('任务名', gulp.series/parallel([])) 执行gulp.series/parallel里面的任务（作用：执行其他任务，自己没有任务要执行）
+  gulp.task('任务名', function () {}) 只执行回调函数中的任务（作用：只执行自己任务，没有其他任务）
+ */
+// 压缩js
+gulp.task('uglify', function () {
+  return gulp.src('./build/js/built.js')
+    .pipe(uglify())
+    .pipe(rename('dist.min.js'))
+    .pipe(gulp.dest('dist/js'))
+});
+// 压缩css
+gulp.task('cssmin', function () {
+  return gulp.src('build/css/built.css')
+    .pipe(cssmin())
+    .pipe(rename('dist.min.css'))
+    .pipe(gulp.dest('dist/css'))
+})
+// 压缩html
+gulp.task('htmlmin', function () {
+  return gulp.src('src/index.html')
+    .pipe(htmlmin({
+      collapseWhitespace: true,  // 去除空格和换行
+      removeComments: true // 移除注释
+    }))
+    .pipe(gulp.dest('dist/'))
 });
 
 gulp.task('less', function () {
@@ -126,8 +156,13 @@ gulp.task('watch', function () {
 gulp.task('js-dev', gulp.series(['eslint', 'babel', 'browserify'])); // 同步执行、顺序执行
 gulp.task('all-dev', gulp.parallel(['js-dev', 'less', 'html'])); // 异步执行，同一时间干多件事，谁先干完谁先结束
 
+gulp.task('js-prod', gulp.series(['js-dev', 'uglify']));
+gulp.task('css-prod', gulp.series(['less', 'cssmin']));
+
 // 开发环境指令
 gulp.task('dev', gulp.series(['all-dev', 'watch']));
+// 生产环境指令
+gulp.task('prod', gulp.parallel(['js-prod', 'css-prod', 'htmlmin']));
 
 /*
   开发环境：
@@ -135,11 +170,15 @@ gulp.task('dev', gulp.series(['all-dev', 'watch']));
   生产环境：
     能生成一个直接上线能使用的项目代码：编译代码（js、less）、语法检查、压缩代码（js、css、html）
 
+  开发依赖：项目构建（开发、生产）时需要使用的依赖
+  生产依赖：项目运行时使用的依赖
+
   启动项目的指令：
     npm start / npm run dev  --> 需要在package.json中scripts设置指令
       "scripts": {
         "start": "gulp dev",
-        "dev": "gulp dev"
+        "dev": "gulp dev",
+        "build": "gulp prod",
+        "dist": "gulp prod"
       }
-
- */
+*/
