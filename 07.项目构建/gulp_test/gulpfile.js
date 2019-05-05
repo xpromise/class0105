@@ -79,3 +79,9 @@ gulp.task('browserify', function () {
     .pipe(rename('built.js')) // 将文件重命名
     .pipe(gulp.dest('build/js'))
 });
+
+
+// 配置任务：为了统一执行之前配置好的任务
+// 任务名是 default ， 输入指令可以省略
+gulp.task('default', gulp.series(['eslint', 'babel', 'browserify'])); // 同步执行、顺序执行
+// gulp.task('default', gulp.parallel(['eslint', 'babel', 'browserify'])); // 异步执行，同一时间干多件事，谁先干完谁先结束
