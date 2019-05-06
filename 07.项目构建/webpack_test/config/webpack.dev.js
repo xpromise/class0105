@@ -17,7 +17,6 @@
       production 生产：多一个压缩代码
 
  */
-
 const { resolve } = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
