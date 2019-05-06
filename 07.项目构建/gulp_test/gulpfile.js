@@ -106,7 +106,7 @@ gulp.task('cssmin', function () {
     .pipe(cssmin())
     .pipe(rename('dist.min.css'))
     .pipe(gulp.dest('dist/css'))
-})
+});
 // 压缩html
 gulp.task('htmlmin', function () {
   return gulp.src('src/index.html')
