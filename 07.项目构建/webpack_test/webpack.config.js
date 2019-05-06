@@ -2,17 +2,25 @@
   webpack.config.js 就是webpack的配置文件，当你执行webpack指令时，会默认读取配置文件
 
     1. 入口 entry: string 单个路径/array/object 多个路径
+      指示webpack以入口文件为起点开始构建打包
     2. 输出 output
+      构建打包后的新文件输出到哪里去
     3. 加载器 loader
+      帮助webpack解析它解析不了的文件：less、img、html...
       - 官网找loader，找不到上npm找
       - 下载loader
       - 直接配置使用
     4. 插件 plugins
+      做一些功能更强大的事情。做一些loader做不了的事。
     5. 模式 mode
+      development 开发
+      production 生产：多一个压缩代码
 
  */
 
 const { resolve } = require('path');
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // 向外暴露的配置对象
 module.exports = {
@@ -21,9 +29,9 @@ module.exports = {
   // 输出: 构建打包后的新文件输出到哪里去
   output: {
     // 输出路径
-    path: resolve(__dirname, 'build/js'),
+    path: resolve(__dirname, 'build'),
     // 输出文件名
-    filename: 'built.js'
+    filename: 'js/built.js'
   },
   module: {
     rules: [
@@ -70,8 +78,26 @@ module.exports = {
           loader: 'url-loader',
           options: {
             limit: 8192, // 8 * 1024 = 8 kb  8kb以下的图片会做base64处理
-            publicPath: '../build/images', // 修改样式文件中图片url路径
-            outputPath: '../images', // 决定图片输出到本地哪里去
+            publicPath: 'images', // 修改样式文件中图片url路径
+            outputPath: 'images', // 决定图片输出到本地哪里去
+            name: '[hash:10].[ext]' // 重命名图片文件  hash:10 hash值取前面10位 ext以图片文件的扩展名取补全（之前是什么扩展名就是什么）
+          }
+        }
+      },
+      {
+        // npm i html-loader -D
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader' // 处理html中图片
+        }
+      },
+      {
+        test: /\.(eot|svg|ttf|woff)$/,
+        use: {
+          loader: 'file-loader',  // 处理其他资源：字体
+          options: {
+            publicPath: 'media', // 修改样式文件中图片url路径
+            outputPath: 'media', // 决定图片输出到本地哪里去
             name: '[hash:10].[ext]' // 重命名图片文件  hash:10 hash值取前面10位 ext以图片文件的扩展名取补全（之前是什么扩展名就是什么）
           }
         }
@@ -79,6 +105,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html' // 以当前文件为模板，创建新文件（自动引入打包后生成js、css文件）
+    }),
 
   ],
   // 开发环境

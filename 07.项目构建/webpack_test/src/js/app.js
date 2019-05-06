@@ -7,6 +7,7 @@ import data from '../json/data.json';
 // 只引入资源，不使用
 import '../less/test1.less';
 import '../less/test2.less';
+import '../less/iconfont.less';
 
 /*
   webpack ./src/js/app.js -o ./build/js/built.js --mode=development
