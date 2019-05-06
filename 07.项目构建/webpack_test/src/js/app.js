@@ -22,7 +22,7 @@ import '../less/iconfont.less';
 */
 
 /* eslint-disable */
-console.log(add(6, 6));
+console.log(add(4, 2));
 console.log(name, age);
 console.log(mul(2, 3));
 console.log(count(2, 1));

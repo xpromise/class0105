@@ -29,7 +29,7 @@ module.exports = {
   // 输出: 构建打包后的新文件输出到哪里去
   output: {
     // 输出路径
-    path: resolve(__dirname, 'build'),
+    path: resolve(__dirname, '../build'),
     // 输出文件名
     filename: 'js/built.js'
   },
@@ -42,12 +42,9 @@ module.exports = {
         test: /\.js$/, // 检查是否js文件，一旦通过就会以下面的loader解析，没有通过就不处理
         exclude: /node_modules/, // 排除node_modules的所有文件
         include: [
-          resolve(__dirname, 'src/js')
+          resolve(__dirname, '../src/js')
         ], // 只处理当前文件夹下的文件 (正则只能写一层目录, 数组里面要写绝对路径)
         loader: "eslint-loader", // 使用哪个loader处理这些文件
-        /*options: {
-          // eslint options (if necessary)
-        }*/
       },
       {
         // npm i babel-loader @babel/core @babel/preset-env -D
@@ -108,8 +105,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html' // 以当前文件为模板，创建新文件（自动引入打包后生成js、css文件）
     }),
-
   ],
-  // 开发环境
-  mode: 'development'
+  // 生产环境
+  mode: 'production',
 };
