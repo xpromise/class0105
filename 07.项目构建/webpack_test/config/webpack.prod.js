@@ -55,96 +55,92 @@ module.exports = {
         loader: "eslint-loader", // 使用哪个loader处理这些文件
       },
       {
-        oneOf: [
+        // npm i babel-loader @babel/core @babel/preset-env -D
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      /*{
+        // npm i less-loader less style-loader css-loader -D
+        test: /\.less$/,
+        use: [{ // 使用多个loader解析：从右往左、从下到上、从后往前执行loader
+          loader: "style-loader" // 从js中找到css代码，并创建一个style标签，放置css样式
+        }, {
+          loader: "css-loader" // 将css代码以commonjs模块化的方式整合在js代码中
+        }, {
+          loader: "less-loader" // 将less编译成css
+        }]
+      },*/
+      {
+        test: /\.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',  // 扩展css前缀，做css兼容性处理
+          'less-loader'
+        ]
+      },
+      {
+        // npm i url-loader file-loader -D
+        test: /\.(png|jpg|gif|webp)$/,
+        use: [
           {
-            // npm i babel-loader @babel/core @babel/preset-env -D
-            test: /\.js$/,
-            exclude: /(node_modules)/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env']
-              }
+            loader: 'url-loader',
+            options: {
+              limit: 8192, // 8 * 1024 = 8 kb  8kb以下的图片会做base64处理
+              publicPath: '/images', // 修改样式文件中图片url路径
+              outputPath: 'images', // 决定图片输出到本地哪里去
+              name: '[hash:10].[ext]' // 重命名图片文件  hash:10 hash值取前面10位 ext以图片文件的扩展名取补全（之前是什么扩展名就是什么）
             }
           },
-          /*{
-            // npm i less-loader less style-loader css-loader -D
-            test: /\.less$/,
-            use: [{ // 使用多个loader解析：从右往左、从下到上、从后往前执行loader
-              loader: "style-loader" // 从js中找到css代码，并创建一个style标签，放置css样式
-            }, {
-              loader: "css-loader" // 将css代码以commonjs模块化的方式整合在js代码中
-            }, {
-              loader: "less-loader" // 将less编译成css
-            }]
-          },*/
           {
-            test: /\.less$/,
-            use: [
-              MiniCssExtractPlugin.loader,
-              'css-loader',
-              'postcss-loader',  // 扩展css前缀，做css兼容性处理
-              'less-loader'
-            ]
-          },
-          {
-            // npm i url-loader file-loader -D
-            test: /\.(png|jpg|gif|webp)$/,
-            use: [
-              {
-                loader: 'url-loader',
-                options: {
-                  limit: 8192, // 8 * 1024 = 8 kb  8kb以下的图片会做base64处理
-                  publicPath: '/images', // 修改样式文件中图片url路径
-                  outputPath: 'images', // 决定图片输出到本地哪里去
-                  name: '[hash:10].[ext]' // 重命名图片文件  hash:10 hash值取前面10位 ext以图片文件的扩展名取补全（之前是什么扩展名就是什么）
-                }
-              },
-              /*{
-                loader: 'img-loader',
-                options: {
+            loader: 'img-loader',
+            options: {
+              plugins: [
+                require('imagemin-gifsicle')({
+                  interlaced: false
+                }),
+                require('imagemin-mozjpeg')({
+                  progressive: true,
+                  arithmetic: false
+                }),
+                require('imagemin-pngquant')({
+                  floyd: 0.5,
+                  speed: 2
+                }),
+                require('imagemin-svgo')({
                   plugins: [
-                    require('imagemin-gifsicle')({
-                      interlaced: false
-                    }),
-                    require('imagemin-mozjpeg')({
-                      progressive: true,
-                      arithmetic: false
-                    }),
-                    require('imagemin-pngquant')({
-                      floyd: 0.5,
-                      speed: 2
-                    }),
-                    require('imagemin-svgo')({
-                      plugins: [
-                        { removeTitle: true },
-                        { convertPathData: false }
-                      ]
-                    })
+                    { removeTitle: true },
+                    { convertPathData: false }
                   ]
-                }
-              }*/
-            ]
-          },
-          {
-            // npm i html-loader -D
-            test: /\.(html)$/,
-            use: {
-              loader: 'html-loader' // 处理html中图片
-            }
-          },
-          {
-            test: /\.(eot|svg|ttf|woff)$/,
-            use: {
-              loader: 'file-loader',  // 处理其他资源：字体
-              options: {
-                publicPath: '/media', // 修改样式文件中图片url路径
-                outputPath: 'media', // 决定图片输出到本地哪里去
-                name: '[hash:10].[ext]' // 重命名图片文件  hash:10 hash值取前面10位 ext以图片文件的扩展名取补全（之前是什么扩展名就是什么）
-              }
+                })
+              ]
             }
           }
         ]
+      },
+      {
+        // npm i html-loader -D
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader' // 处理html中图片
+        }
+      },
+      {
+        test: /\.(eot|svg|ttf|woff)$/,
+        use: {
+          loader: 'file-loader',  // 处理其他资源：字体
+          options: {
+            publicPath: '/media', // 修改样式文件中图片url路径
+            outputPath: 'media', // 决定图片输出到本地哪里去
+            name: '[hash:10].[ext]' // 重命名图片文件  hash:10 hash值取前面10位 ext以图片文件的扩展名取补全（之前是什么扩展名就是什么）
+          }
+        }
       }
     ]
   },
