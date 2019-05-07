@@ -147,7 +147,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html', // 以当前文件为模板，创建新文件（自动引入打包后生成js、css文件）
-      // 压缩js
+      // 压缩html
       minify: {
         removeComments: true,  // 移除注释
         collapseWhitespace: true,  // 移除空格/换行符
