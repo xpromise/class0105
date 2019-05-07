@@ -14,7 +14,6 @@
 <script type="text/javascript" src="../js/babel.min.js"></script>
 
 <script type="text/babel">
-
   /*
 需求: 自定义用来显示一个人员信息的组件, 效果如页面. 说明
   1). 如果性别没有指定, 默认为男
@@ -30,6 +29,11 @@
   // 定义组件
   class Person extends React.Component {
     // 定义Person类的属性
+    /*
+      类相当于实例的原型，所有在类中定义的方法，都会被实例继承。
+      如果在一个方法前，加上`static`关键字，就表示该方法不会被实例继承，
+      而是直接通过类来调用，这就称为“静态方法”。
+     */
     static propTypes = {
       name: PropTypes.string.isRequired, // name属性的值必须为字符串，必须写
       age: PropTypes.number,
