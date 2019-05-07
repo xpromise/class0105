@@ -18,6 +18,50 @@
     1. 显示h2标题, 初始文本为: 你喜欢我
     2. 点击标题更新为: 我喜欢你
   */
+  // 定义组件
+  class IsLike extends React.Component {
+    /*constructor() {
+      // 子类继承父类，必须要调用super方法
+      super();
+      // 初始化状态
+      this.state = {
+        isLikeMe: false
+      };
+      // 修改函数的this指向（只会执行一次）
+      // 返回一个新函数，新函数的this才会变化。并且不会立即调用这个函数
+      // this.handleClick = this.handleClick.bind(this);
+    }*/
+    // 初始化状态
+    state = {
+      isLikeMe: false
+    }
+
+    handleClick = () => {
+      // Cannot read property 'state' of undefined
+      // this.state  --> this 是 undefined
+      // 目前只有constructor、render方法this指向实例对象，其他方法this默认都是undefined
+      console.log(this);
+      // 获取之前的状态
+      const { isLikeMe } = this.state;
+      // 改变状态值
+      // 修改状态值，重新调用this.render方法, 重新将生成新的虚拟DOM对象渲染页面上
+      this.setState({
+        isLikeMe: !isLikeMe
+      })
+      // this.state.isLikeMe = !isLikeMe;
+    }
+
+    render() {
+      // 读取状态值
+      const { isLikeMe } = this.state;
+      // 绑定点击事件
+      return <h1 onClick={this.handleClick}>{isLikeMe ? '你喜欢我' : '我喜欢你'}</h1>;
+    }
+  }
+  // 将组件渲染到页面上
+  ReactDOM.render(<IsLike />, document.getElementById('example'));
+
+
 </script>
 </body>
 </html>
