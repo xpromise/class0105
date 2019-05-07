@@ -10,6 +10,7 @@
 
 <script type="text/javascript" src="../js/react.development.js"></script>
 <script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
 <script type="text/javascript" src="../js/babel.min.js"></script>
 
 <script type="text/babel">
@@ -19,6 +20,60 @@
   1). 如果性别没有指定, 默认为男
   2). 如果年龄没有指定, 默认为18
   */
+
+  const person = {
+    name: 'jack',
+    age: 18,
+    sex: '男'
+  };
+
+  // 定义组件
+  class Person extends React.Component {
+    // 定义Person类的属性
+    static propTypes = {
+      name: PropTypes.string.isRequired, // name属性的值必须为字符串，必须写
+      age: PropTypes.number,
+      sex: PropTypes.string
+    }
+
+    static defaultProps = {
+      age: 20,
+      sex: '女'
+    }
+
+    // 定义Person类的实例对象的属性
+    state = {}
+
+    render() {
+      // 获取标签属性的值
+      // console.log(this);
+      const { name, age, sex } = this.props;
+
+      return <ul>
+        <li>姓名：{name}</li>
+        <li>性别：{age}</li>
+        <li>年龄：{sex}</li>
+      </ul>
+    }
+  }
+  // 组件需要对接收属性的值的类型进行约束
+ /* Person.propTypes = {
+    name: PropTypes.string.isRequired, // name属性的值必须为字符串，必须写
+    age: PropTypes.number,
+    sex: PropTypes.string
+  };*/
+  // 定义组件标签属性的默认值
+  /*Person.defaultProps = {
+    age: 20,
+    sex: '女'
+  };
+*/
+  // 渲染到页面上
+  // 组件外向组件内传递数据，通过标签属性的方式传递
+  // ReactDOM.render(<Person name={person.name} age={person.age} sex={person.sex}/>, document.getElementById('example1'));
+  // babel帮助对象能够使用...
+  ReactDOM.render(<Person {...person}/>, document.getElementById('example1'));
+
 
 </script>
 </body>

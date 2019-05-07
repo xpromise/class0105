@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>class</title>
+</head>
+<body>
+<script type="text/javascript">
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  Person.prototype.setName = function (name) {
+    this.name = name;
+  }
+
+  class Father {
+    setAge(age) {
+      this.age = age;
+    }
+  }
+
+  class Son extends Father{
+    constructor(name, age) {
+      // 使用extends继承，就必须在constructor调用super方法
+      super();
+      this.name = name;
+      this.age = age;
+    }
+
+    setName(name) {
+      this.name = name;
+    }
+  }
+  // new调用时会自动调用类的constructor方法， 只会调用一次
+  const s = new Son('jack', 18);
+  console.log(s);
+
+</script>
+</body>
+</html>
