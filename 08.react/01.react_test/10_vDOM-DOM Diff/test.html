@@ -15,6 +15,22 @@
   /*
   验证:
   虚拟DOM+DOM Diff算法: 最小化页面重绘
+
+    tree diff
+      如果同一级节点相同，就对比子节点，
+      如果不相同。就不看子节点，直接全部替换
+    component diff
+      如果是相同类型的组件，就按照tree diff对比里面返回的虚拟DOM对象
+      如果不相同的组件，直接替换掉
+    element diff
+      如果是同一级节点，会添加一个唯一的key属性
+
+    结论：
+      1. 通过控制opacity，visibility来控制元素的显示、隐藏更好
+      2. 同一级节点的元素添加一个唯一的key属性，走element diff，性能更好
+      3. 保持节点的稳定性，不要随意修改DOM的元素类型  p --> div --> span
+      4. 不建议往元素前面插入、删除节点，性能开销很大
+
   */
 
   class HelloWorld extends React.Component {
