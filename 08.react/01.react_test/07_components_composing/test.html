@@ -29,6 +29,11 @@
             如果是多个组件使用，就定义在多个组件的公共的父组件中
           3. state定义成什么样的数据？
             如果数据需要进行遍历展示，通常用[]
+          4. 修改state？
+            状态数据定义在哪个组件，修改数据的方法就定义在哪个组件
+
+           a. 数据动态展示
+           b. 其他交互效果
 
      */
 
@@ -39,13 +44,24 @@
         todos: ['吃饭', '睡觉', '宝郭德纲']
       }
 
+      // 更新state数据的方法
+      updateTodos = (todo) => {
+        // 读取之前state数据
+        const { todos } = this.state;
+        // 更新状态数据时，不希望修改原数据，应该创建一份新数据
+        // 更新state数据
+        this.setState({
+          todos: [todo, ...todos]
+        })
+      }
+
       render() {
         // 获取状态数据
         const { todos } = this.state;
 
         return <div>
           <h1>Simple ToDo List</h1>
-          <AddToDo />
+          <AddToDo updateTodos={this.updateTodos} length={todos.length}/>
           {/* 通过标签属性props方式，由组件外App组件向组件内ToDoList组件传递可变数据todos */}
           <ToDoList todos={todos}/>
         </div>;
@@ -54,11 +70,42 @@
 
     // AddToDo
     class AddToDo extends React.Component {
+      static propTypes = {
+        updateTodos: PropTypes.func.isRequired,
+        length: PropTypes.number.isRequired
+      }
+
+      /*constructor() {
+        super();
+        this.msgInput = React.createRef();
+      }*/
+      msgInput = React.createRef();
+
+      todoAdd = () => {
+        const input = this.msgInput.current;
+        // 获取输入框数据
+        const value = input.value.trim();
+        // 判断value是否为空
+        if (value) {
+          // 添加到todoList
+          this.props.updateTodos(value);
+          // 清空数据
+          input.value = '';
+        }
+      }
+
       render() {
         return <div>
-          <input type="text"/>
-          <button>ADD #3</button>
-        </div>
+          <input type="text" ref={this.msgInput}/>
+          {
+            /*
+            这种方式函数没有缓存，每次都要创建新的函数
+            <button onClick={() => {}}>ADD #3</button>
+            */
+          }
+          {/* 这种方式有缓存，只需要创建一次，今后读取缓存就行 */}
+          <button onClick={this.todoAdd}>ADD #{this.props.length}</button>
+        </div>;
       }
     }
 
