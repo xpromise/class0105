@@ -13,6 +13,78 @@
   <script type="text/javascript" src="../js/prop-types.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
   <script type="text/babel">
+    /*
+      组件化编码流程：
+        1. 拆分组件
+          按照页面的功能效果或界面变化来拆分，默认最外层有App组件
+            App
+            AddToDo
+            ToDoList
+        2. 实现静态组件
+          静态组件：没有任何功能效果，只有纯静态界面显示
+        3. 实现js动态组件
+          1. 要不要定义state？ 因为页面有变化，所以需要定义state
+          2. state定义在哪？
+            如果是单个组件使用，就定义在单个组件内部
+            如果是多个组件使用，就定义在多个组件的公共的父组件中
+          3. state定义成什么样的数据？
+            如果数据需要进行遍历展示，通常用[]
+
+     */
+
+    // App
+    class App extends React.Component {
+      // 初始化状态
+      state = {
+        todos: ['吃饭', '睡觉', '宝郭德纲']
+      }
+
+      render() {
+        // 获取状态数据
+        const { todos } = this.state;
+
+        return <div>
+          <h1>Simple ToDo List</h1>
+          <AddToDo />
+          {/* 通过标签属性props方式，由组件外App组件向组件内ToDoList组件传递可变数据todos */}
+          <ToDoList todos={todos}/>
+        </div>;
+      }
+    }
+
+    // AddToDo
+    class AddToDo extends React.Component {
+      render() {
+        return <div>
+          <input type="text"/>
+          <button>ADD #3</button>
+        </div>
+      }
+    }
+
+    // ToDoList
+    class ToDoList extends React.Component {
+      // 约束要接收属性的值的类型
+      static propTypes = {
+        todos: PropTypes.array.isRequired
+      }
+
+      render() {
+        // 获取props
+        const { todos } = this.props;
+
+        return <ul>
+          {
+            todos.map((todo, index) => {
+              return <li key={index}>{todo}</li>;
+            })
+          }
+        </ul>;
+      }
+    }
+
+    // 渲染组件
+    ReactDOM.render(<App />, document.getElementById('example'));
 
   </script>
 </body>
