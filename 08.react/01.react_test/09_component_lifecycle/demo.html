@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+</head>
+<body>
+<div id="example"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">
+  /*
+  需求: 自定义组件
+    1. 让指定的文本做显示/隐藏的动画
+    2. 切换时间为2S
+    3. 点击按钮从界面中移除组件界面
+   */
+  /*
+    React中内置的函数（生命周期函数），this指向实例对象
+    用户自己定义的函数，this指向undefined
+   */
+  class LifeCircle extends React.Component {
+    state = {
+      opacity: 1
+    }
+
+    // 组件已经挂载：发送请求、设置定时器
+    componentDidMount() {
+      this.intervalId = setInterval(() => {
+        // 获取状态数据
+        const { opacity } = this.state;
+        const newOpacity = opacity - 0.01;
+        // 更新状态
+        this.setState({
+          opacity: newOpacity > 0 ? newOpacity : 1
+        })
+      }, 1000 / 60)
+    }
+
+    goDie = () => {
+      // 卸载组件
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'));
+    };
+
+    componentWillUnmount() {
+      // 清除定时器
+      clearInterval(this.intervalId);
+    }
+
+    render() {
+      // 获取状态数据
+      const { opacity } = this.state;
+
+      return <div>
+        {/* 第一个括号代码里面是js代码 第二个括号代表是对象数据 */}
+        <h2 style={{opacity}}>React学不会,怎么办?</h2>
+        <button onClick={this.goDie}>不活了~</button>
+      </div>
+    }
+  }
+
+  ReactDOM.render(<LifeCircle />, document.getElementById('example'));
+</script>
+</body>
+</html>

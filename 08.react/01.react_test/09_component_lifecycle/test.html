@@ -17,6 +17,58 @@
     2. 切换时间为2S
     3. 点击按钮从界面中移除组件界面
    */
+  class LifeCircle extends React.Component {
+    // 初始化状态数据、创建createRef
+    constructor() {
+      super();
+      console.log('constructor()');
+      this.state = {
+        flag: false
+      }
+    }
+    // 组件将要挂载
+    // 如果渲染之前要做一些准备工作，用的少
+    // 可能会执行多次，影响页面初次渲染的速度，所以不在这里发送请求
+    componentWillMount() {
+      console.log('componentWillMount()');
+    }
+    // 组件已经挂载完毕
+    // 发送ajax请求、设置定时器等异步任务
+    componentDidMount() {
+      console.log('componentDidMount()');
+    }
+
+    // 用来做React性能优化，返回值为true会重新渲染组件，返回值为false就不会重新渲染组件
+    // 根据之前的状态和属性与最新的状态和属性进行对比，如果一样，就不更新。如果有一个不一样, 就更新
+    shouldComponentUpdate(prevProps, prevState) {
+      console.log('shouldComponentUpdate()');
+      // 函数要求返回值是Boolean
+      return false;
+    }
+
+    componentWillUpdate() {
+      console.log('componentWillUpdate()');
+    }
+
+    componentDidUpdate() {
+      console.log('componentDidUpdate()');
+    }
+
+    // 组件将要卸载
+    // 做一些收尾工作：清除定时器
+    componentWillUnmount() {
+      console.log('componentWillUnmount()');
+    }
+
+    // 返回要渲染的虚拟DOM对象
+    render() {
+      console.log('render()');
+      // return <h1 onClick={() => this.setState({flag: !this.state.flag})}>LifeCircle</h1>;
+      return <h1 onClick={() => ReactDOM.unmountComponentAtNode(document.getElementById('example'))}>LifeCircle</h1>;
+    }
+  }
+
+  ReactDOM.render(<LifeCircle />, document.getElementById('example'));
 </script>
 </body>
 </html>

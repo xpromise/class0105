@@ -74,13 +74,7 @@
       })
     }*/
     // 高阶函数：执行函数返回值是新函数
-    handleChange = (stateName) => {
-      return (e) => {
-        this.setState({
-          [stateName]: e.target.value
-        })
-      }
-    }
+    handleChange = (stateName) => (e) => this.setState({[stateName]: e.target.value})
 
     render() {
       // onSubmit事件是表单的提交事件
