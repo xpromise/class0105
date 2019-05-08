@@ -23,9 +23,11 @@
     如果今后需要往数组最前面插入数据，必须用id作为key的值，
     如果不是，而是往最后追加，可以用index作为key的值，（如果数据中有id属性，就用id）
    */
+
   function ListItem({id, name, age}) {
     return <li>{id}--{name}--{age}---<input type="text"/></li>
   }
+
   class PersonList extends React.Component {
     constructor(props) {
       super(props)
@@ -39,8 +41,9 @@
     }
     update() {
       let persons = this.state.persons
-      persons.unshift({id: 3, name: 'Bob', age: 14})
-      this.setState({persons})
+      this.setState({
+        persons: [{id: 3, name: 'Bob', age: 14}, ...persons]
+      })
     }
     render() {
       const persons = this.state.persons
