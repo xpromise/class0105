@@ -26,10 +26,17 @@ export default class App extends Component {
     })
   }
 
+  // 删除评论
+  delComment = (id) => {
+    this.setState({
+      comments: this.state.comments.filter((item) => item.id !== id)
+    })
+  }
+
   render() {
     // 获取状态数据
     const { comments } = this.state;
-    console.log(comments);
+    // console.log(comments);
 
     return <div>
       <header className="site-header jumbotron">
@@ -43,7 +50,7 @@ export default class App extends Component {
       </header>
       <div className="container">
         <AddComment addComment={this.addComment}/>
-        <CommentList comments={comments}/>
+        <CommentList comments={comments} delComment={this.delComment}/>
       </div>
     </div>
   }
