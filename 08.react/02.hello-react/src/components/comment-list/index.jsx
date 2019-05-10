@@ -22,8 +22,8 @@ export default class CommentList extends Component {
       <h2 style={{display: 'none'}}>暂无评论，点击左侧添加评论！！！</h2>
       <ul className="list-group">
         {
-          comments.map((comment, index) => {
-            return <CommentItem comment={comment} key={index}/>
+          comments.map((comment) => {
+            return <CommentItem comment={comment} key={comment.id}/>
           })
         }
       </ul>

@@ -13,14 +13,23 @@ export default class App extends Component {
   // 初始化状态
   state = {
     comments: [
-      {name: 'jack', content: 'i love rose'},
-      {name: 'rose', content: 'i love my husband'}
+      {name: 'jack', content: 'i love rose', id: 1},
+      {name: 'rose', content: 'i love my husband', id: 2}
     ]
+  }
+
+  // 添加评论
+  addComment = (comment) => {
+    // 更新状态数据
+    this.setState({
+      comments: [comment, ...this.state.comments]
+    })
   }
 
   render() {
     // 获取状态数据
     const { comments } = this.state;
+    console.log(comments);
 
     return <div>
       <header className="site-header jumbotron">
@@ -33,7 +42,7 @@ export default class App extends Component {
         </div>
       </header>
       <div className="container">
-        <AddComment />
+        <AddComment addComment={this.addComment}/>
         <CommentList comments={comments}/>
       </div>
     </div>
