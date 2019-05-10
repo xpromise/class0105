@@ -1,21 +1,41 @@
 /*
-  定义App应用主/根组件
+  App组件、应用主组件
  */
 // 引入依赖
 import React, { Component } from 'react';
-/*import React from 'react';
-import { Component } from 'react';*/
-// 在脚手架中所有资源都要引入才能使用：图片、样式等
-import logo from './logo.svg';
-import './App.css';
 
-// 暴露出去
+// 引入其他组件
+import AddComment from './components/add-comment';
+import CommentList from './components/comment-list';
+
+// 暴露组件
 export default class App extends Component {
+  // 初始化状态
+  state = {
+    comments: [
+      {name: 'jack', content: 'i love rose'},
+      {name: 'rose', content: 'i love my husband'}
+    ]
+  }
+
   render() {
+    // 获取状态数据
+    const { comments } = this.state;
+
     return <div>
-      <h1>React脚手架练习</h1>
-      <img className="logo" src={logo} alt="logo"/>
+      <header className="site-header jumbotron">
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12">
+              <h1>请发表对React的评论</h1>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div className="container">
+        <AddComment />
+        <CommentList comments={comments}/>
+      </div>
     </div>
   }
 }
-
