@@ -1,16 +1,14 @@
 /*
   评论列表显示组件
  */
-
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+// import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
 
 // 引入其他组件
 import CommentItem from '../comment-item';
 
 export default function CommentList({ comments, delComment }) {
-  // 获取props
-  // const { comments, delComment } = props;
 
   return <div className="col-md-8">
     <h3 className="reply">评论回复：</h3>
