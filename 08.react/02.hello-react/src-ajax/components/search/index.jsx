@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { publish } from 'pubsub-js';
+import PropTypes from 'prop-types';
 
 export default class Search extends Component {
+  static propTypes = {
+    updateSearchName: PropTypes.func.isRequired
+  }
   // 为了收集表单数据定义的
   state = {
     searchName: ''
@@ -12,8 +15,8 @@ export default class Search extends Component {
     const { searchName } = this.state;
 
     if (searchName) {
-      // 发布消息
-      publish('SEARCH_NAME', searchName);
+      // 调用父组件传过来的方法
+      this.props.updateSearchName(searchName);
     }
   }
 
