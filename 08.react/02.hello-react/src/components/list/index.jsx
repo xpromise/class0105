@@ -7,55 +7,66 @@ export default class List extends Component {
     searchName: PropTypes.string.isRequired
   }
 
+  state = {
+    isFirstView: true,  // 初始化渲染使用的状态
+    isLoading: false, // loading状态
+    success: [], // 请求成功的状态
+    error: null // 请求失败的状态
+  }
+
   // 组件将要接收属性（父组件渲染，会将props以标签属性的方式传给子组件，而子组件就会触发当前生命周期函数）
   componentWillReceiveProps(nextProps) {
     // console.log(this.props.searchName); // 得到是上一次的props
     // console.log(nextProps);
-
+    // 将初始化状态改为loading状态
+    this.setState({
+      isLoading: true,
+      isFirstView: false
+    })
     // 发送请求
     // 请求地址： https://api.github.com/search/users?q=xp  请求方式 get
     axios.get(`https://api.github.com/search/users?q=${nextProps.searchName}`)
       .then((res) => {
-        console.log(res);
+        // 请求成功，将loading状态改为成功的状态
+        this.setState({
+          isLoading: false,
+          success: res.data.items.map((item) => ({name: item.login, img: item.avatar_url, url: item.html_url}))
+        })
+        // console.log(res);
       })
       .catch((err) => {
-
+        // 请求失败，将loading状态改为失败的状态
+        this.setState({
+          isLoading: false,
+          success: [],
+          error: '网络出现问题，请刷新试试~'
+        })
       })
 
   }
 
   render() {
-    return <div className="row">
-      <div className="card">
-        <a href="https://github.com/reactjs" target="_blank">
-          <img src="https://avatars.githubusercontent.com/u/6412038?v=3" style={{width: 100}}/>
-        </a>
-        <p className="card-text">reactjs</p>
-      </div>
-      <div className="card">
-        <a href="https://github.com/reactjs" target="_blank">
-          <img src="https://avatars.githubusercontent.com/u/6412038?v=3" style={{width: 100}}/>
-        </a>
-        <p className="card-text">reactjs</p>
-      </div>
-      <div className="card">
-        <a href="https://github.com/reactjs" target="_blank">
-          <img src="https://avatars.githubusercontent.com/u/6412038?v=3" style={{width: 100}}/>
-        </a>
-        <p className="card-text">reactjs</p>
-      </div>
-      <div className="card">
-        <a href="https://github.com/reactjs" target="_blank">
-          <img src="https://avatars.githubusercontent.com/u/6412038?v=3" style={{width: 100}}/>
-        </a>
-        <p className="card-text">reactjs</p>
-      </div>
-      <div className="card">
-        <a href="https://github.com/reactjs" target="_blank">
-          <img src="https://avatars.githubusercontent.com/u/6412038?v=3" style={{width: 100}}/>
-        </a>
-        <p className="card-text">reactjs</p>
-      </div>
-    </div>;
+    const { isFirstView, isLoading, success, error } = this.state;
+
+    if (isFirstView) {
+      return <h1>enter name to search</h1>;
+    } else if (isLoading) {
+      return <h1>loading...</h1>;
+    } else if (success.length) {
+      return <div className="row">
+        {
+          success.map((item, index) => {
+            return <div className="card" key={index}>
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
+                <img src={item.img} style={{width: 100}} alt={item.name}/>
+              </a>
+              <p className="card-text">{item.name}</p>
+            </div>
+          })
+        }
+      </div>;
+    } else {
+      return <h1>{error}</h1>;
+    }
   }
 }
